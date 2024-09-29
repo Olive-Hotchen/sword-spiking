@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bi0ej4m7vxu8y"]
+
+[ext_resource type="Script" path="res://Scripts/BallAndLabel.cs" id="1_7g0pp"]
+[ext_resource type="PackedScene" uid="uid://dmy165tmuyi0b" path="res://Scenes/ball.tscn" id="1_yi0qc"]
+
+[node name="BallAndLabel" type="Node2D" node_paths=PackedStringArray("Label", "Ball")]
+script = ExtResource("1_7g0pp")
+Label = NodePath("Label")
+Ball = NodePath("Ball")
+
+[node name="Ball" parent="." instance=ExtResource("1_yi0qc")]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 23.0
+offset_top = -45.0
+offset_right = 93.0
+offset_bottom = -13.0
+text = "I dunno"

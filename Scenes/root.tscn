@@ -1,14 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://bsy4fo7wi3lev"]
+[gd_scene load_steps=4 format=3 uid="uid://bsy4fo7wi3lev"]
 
 [ext_resource type="PackedScene" uid="uid://frw2e4mrccct" path="res://Scenes/character.tscn" id="1_rcfu3"]
+[ext_resource type="PackedScene" uid="uid://bi0ej4m7vxu8y" path="res://Scenes/ball_and_label.tscn" id="2_syguv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n06r6"]
 size = Vector2(1157.4, 216.431)
 
 [node name="Root" type="Node2D"]
+position = Vector2(386, 422)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 scale = Vector2(0.99447, 1.03941)
+collision_layer = 2
+collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(577.695, 515.216)
@@ -20,11 +24,14 @@ offset_top = 407.0
 offset_right = 1160.0
 offset_bottom = 620.0
 color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2(-960, 677)
+position = Vector2(-641, 653)
 rotation = -1.57079
 scale = Vector2(0.99447, 1.03941)
+collision_layer = 2
+collision_mask = 5
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
@@ -39,9 +46,11 @@ offset_bottom = 620.0
 color = Color(0, 0, 0, 1)
 
 [node name="StaticBody2D3" type="StaticBody2D" parent="."]
-position = Vector2(1019, 650)
+position = Vector2(727, 643)
 rotation = -1.57079
 scale = Vector2(0.99447, 1.03941)
+collision_layer = 2
+collision_mask = 5
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
@@ -61,3 +70,9 @@ scale = Vector2(0.5, 0.5)
 
 [node name="Camera2D" type="Camera2D" parent="Character"]
 position_smoothing_enabled = true
+position_smoothing_speed = 2.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+
+[node name="BallAndLabel" parent="." instance=ExtResource("2_syguv")]
+position = Vector2(682, 490)

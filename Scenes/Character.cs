@@ -1,4 +1,6 @@
+using System.Linq;
 using Godot;
+using Godot.Collections;
 
 namespace BallSpiking.Scenes;
 
@@ -6,15 +8,17 @@ public partial class Character : CharacterBody2D
 {
     [ExportGroup("Movement")]
     [Export]
-    public float JumpVelocity { get; set; } = -1000.0f;
+    public float JumpVelocity { get; set; } = -900.0f;
     [Export] public float InputBufferPatience { get; set; } = 0.1f;
     [Export] public float CoyoteTime { get; set; } = 0.08f;
     [Export] public float FastFallGravity { get; set; } = 10000.0f;
     [Export] public float Gravity { get; set; } = 2000.0f;
-    [Export] public float FallGravity { get; set; } = 3000.0f;
+    [Export] public float FallGravity { get; set; } = 4000.0f;
     [Export] public float Speed { get; set; } = 500.0f;
     [Export] public float Acceleration { get; set; } = 2000.0f;
     [Export] public float Friction { get; set; } = 1800.0f;
+    [Export] public Timer HitboxActive { get; set; }
+    [Export] public Area2D SpikeRight { get; set; }
     
     private Timer _inputBuffer;
     private Timer _coyoteTimer;
@@ -32,10 +36,11 @@ public partial class Character : CharacterBody2D
         _coyoteTimer.OneShot = true;
         AddChild(_coyoteTimer);
         _coyoteTimer.Timeout += CoyoteTimerOnTimeout;
+        
         base._Ready();
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         var horizontalInput = Input.GetAxis("move_left", "move_right");
         var jumpAttempted = Input.IsActionJustPressed("jump");
@@ -87,6 +92,7 @@ public partial class Character : CharacterBody2D
         
         var floorDamping = IsOnFloor() ? 1.0f : 0.5f;
         var dashMultiplier = Input.IsActionPressed("dash") ? 2.0f : 1.0f;
+        Sprinting = Input.IsActionPressed("dash");
 
         if (horizontalInput != 0)
         {
@@ -103,10 +109,42 @@ public partial class Character : CharacterBody2D
                 Velocity.Y);
         }
 
+        CachedVelocity = Velocity;
+
+        GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH = Velocity.X switch
+        {
+            > 0 => false,
+            < 0 => true,
+            _ => GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH
+        };
+
         MoveAndSlide();
-            
         base._PhysicsProcess(delta);
     }
+
+    public override void _Process(double delta)
+    {
+        HandleInput();
+        
+        base._Process(delta);
+    }
+
+    private void HandleInput()
+    {
+        if (Input.IsActionJustPressed("spike_right"))
+        {
+            GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH = false;
+            GetNode<AnimationPlayer>("AnimationPlayer").Play("kick_right");
+        } else if (Input.IsActionJustPressed("spike_left"))
+        {
+            GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH = true;
+            GetNode<AnimationPlayer>("AnimationPlayer").Play("kick_left");
+        }
+    }
+
+    public Vector2 CachedVelocity { get; set; }
+    
+    public bool Sprinting { get; set; }
 
     private float GetLocalGravity()
     {

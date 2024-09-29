@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://dmy165tmuyi0b"]
+
+[ext_resource type="Script" path="res://Scripts/Ball.cs" id="1_67782"]
+[ext_resource type="Texture2D" uid="uid://cijaouts8x4v5" path="res://Assets/ball.png" id="1_gjugr"]
+[ext_resource type="PackedScene" uid="uid://bxvgvbsmo80dv" path="res://Scenes/hurtbox.tscn" id="3_cx1wu"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5ts6s"]
+bounce = 0.5
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8n0wx"]
+radius = 21.0238
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_njbnq"]
+radius = 18.0278
+
+[node name="Ball" type="RigidBody2D" node_paths=PackedStringArray("HurtBox")]
+collision_layer = 0
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_5ts6s")
+gravity_scale = 2.0
+script = ExtResource("1_67782")
+HurtBox = NodePath("Hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6, -3)
+shape = SubResource("CircleShape2D_8n0wx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_gjugr")
+
+[node name="Hurtbox" parent="." instance=ExtResource("3_cx1wu")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(6, -3)
+shape = SubResource("CircleShape2D_njbnq")
