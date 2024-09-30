@@ -1,0 +1,109 @@
+[gd_scene load_steps=15 format=3 uid="uid://0w5b1nnchuw1"]
+
+[ext_resource type="Texture2D" uid="uid://tph0g4jo1l3i" path="res://Assets/Skeleton Warrior.png" id="1_gbm5s"]
+[ext_resource type="Script" path="res://Scripts/Enemy.cs" id="1_vb7eu"]
+[ext_resource type="PackedScene" uid="uid://bxvgvbsmo80dv" path="res://Scenes/hurtbox.tscn" id="3_5x2w1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4fm50"]
+atlas = ExtResource("1_gbm5s")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ygi2x"]
+atlas = ExtResource("1_gbm5s")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yw6q"]
+atlas = ExtResource("1_gbm5s")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wohpg"]
+atlas = ExtResource("1_gbm5s")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82r30"]
+atlas = ExtResource("1_gbm5s")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7cj6f"]
+atlas = ExtResource("1_gbm5s")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dhj8r"]
+atlas = ExtResource("1_gbm5s")
+region = Rect2(288, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iry50"]
+atlas = ExtResource("1_gbm5s")
+region = Rect2(336, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o35k3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4fm50")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ygi2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4yw6q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wohpg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_82r30")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7cj6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dhj8r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iry50")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b2xsq"]
+height = 38.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hgkuc"]
+radius = 12.5
+height = 38.0
+
+[node name="EnemySkele" type="CharacterBody2D" node_paths=PackedStringArray("HurtBox")]
+scale = Vector2(2, 2)
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("1_vb7eu")
+HurtBox = NodePath("Hurtbox")
+Health = 5000
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_o35k3")
+animation = &"idle"
+frame_progress = 0.779052
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-4, 5)
+shape = SubResource("CapsuleShape2D_b2xsq")
+
+[node name="Hurtbox" parent="." instance=ExtResource("3_5x2w1")]
+collision_layer = 16
+collision_mask = 0
+linear_damp_space_override = 2
+linear_damp = 23.271
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(-4, 5)
+shape = SubResource("CapsuleShape2D_hgkuc")
+
+[node name="Health" type="Label" parent="."]
+offset_left = -21.0
+offset_top = -35.5
+offset_right = 19.0
+offset_bottom = -12.5

@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmy165tmuyi0b"]
+[gd_scene load_steps=15 format=3 uid="uid://dmy165tmuyi0b"]
 
 [ext_resource type="Script" path="res://Scripts/Ball.cs" id="1_67782"]
-[ext_resource type="Texture2D" uid="uid://cijaouts8x4v5" path="res://Assets/ball.png" id="1_gjugr"]
+[ext_resource type="Shader" path="res://resources/shaders/ball-squish.gdshader" id="2_homke"]
+[ext_resource type="Texture2D" uid="uid://brpn6i8luwft8" path="res://Assets/ball_blue_small.png" id="2_p75wl"]
 [ext_resource type="PackedScene" uid="uid://bxvgvbsmo80dv" path="res://Scenes/hurtbox.tscn" id="3_cx1wu"]
+[ext_resource type="PackedScene" uid="uid://dhti6kgpavov2" path="res://Scenes/hitbox.tscn" id="4_ybtc4"]
+[ext_resource type="PackedScene" uid="uid://cmhq0vkr4dm86" path="res://Scenes/particle_queue.tscn" id="6_bquos"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5ts6s"]
 bounce = 0.5
@@ -10,27 +13,119 @@ bounce = 0.5
 [sub_resource type="CircleShape2D" id="CircleShape2D_8n0wx"]
 radius = 21.0238
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_njbnq"]
-radius = 18.0278
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wpl7j"]
+shader = ExtResource("2_homke")
+shader_parameter/uv_mode = false
+shader_parameter/x_factor = 2.0
+shader_parameter/bulge = 4.75e-08
 
-[node name="Ball" type="RigidBody2D" node_paths=PackedStringArray("HurtBox")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_njbnq"]
+radius = 22.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vchrd"]
+radius = 19.0
+
+[sub_resource type="Animation" id="Animation_01ctn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.8, 0.8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_djy4u"]
+resource_name = "bounce_v"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.5),
+"transitions": PackedFloat32Array(-2, -2, 1, -2),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1.4, 0.4), Vector2(0.6, 1), Vector2(0.8, 0.8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.5),
+"transitions": PackedFloat32Array(-2.07053, -2.07053, -2.07053, -2),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 5), Vector2(0, -2), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mghur"]
+_data = {
+"RESET": SubResource("Animation_01ctn"),
+"bounce_v": SubResource("Animation_djy4u")
+}
+
+[node name="Ball" type="RigidBody2D" node_paths=PackedStringArray("HurtBox", "HitBox", "ParticleQueue") groups=["freeze", "freezer"]]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 34
 physics_material_override = SubResource("PhysicsMaterial_5ts6s")
 gravity_scale = 2.0
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_67782")
 HurtBox = NodePath("Hurtbox")
+HitBox = NodePath("Hitbox")
+ParticleQueue = NodePath("ParticleQueue")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(6, -3)
+visible = false
 shape = SubResource("CircleShape2D_8n0wx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("1_gjugr")
+material = SubResource("ShaderMaterial_wpl7j")
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_p75wl")
 
 [node name="Hurtbox" parent="." instance=ExtResource("3_cx1wu")]
+visible = false
+collision_layer = 8
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(6, -3)
 shape = SubResource("CircleShape2D_njbnq")
+
+[node name="Hitbox" parent="." node_paths=PackedStringArray("HitBoxSender") instance=ExtResource("4_ybtc4")]
+visible = false
+collision_mask = 16
+HitBoxSender = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_vchrd")
+
+[node name="ParticleQueue" parent="." instance=ExtResource("6_bquos")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mghur")
+}

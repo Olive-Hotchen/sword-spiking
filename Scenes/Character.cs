@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Godot;
 using Godot.Collections;
@@ -17,9 +18,7 @@ public partial class Character : CharacterBody2D
     [Export] public float Speed { get; set; } = 500.0f;
     [Export] public float Acceleration { get; set; } = 2000.0f;
     [Export] public float Friction { get; set; } = 1800.0f;
-    [Export] public Timer HitboxActive { get; set; }
-    [Export] public Area2D SpikeRight { get; set; }
-    
+   
     private Timer _inputBuffer;
     private Timer _coyoteTimer;
     private bool _coyoteJump = true;
@@ -146,7 +145,7 @@ public partial class Character : CharacterBody2D
     
     public bool Sprinting { get; set; }
 
-    private float GetLocalGravity()
+private float GetLocalGravity()
     {
         if (Input.IsActionPressed("fast_fall"))
         {

@@ -29,6 +29,12 @@ window/size/mode=2
 
 project/assembly_name="BallSpiking"
 
+[global_group]
+
+freezer=""
+freeze=""
+wall=""
+
 [input]
 
 move_left={
@@ -84,10 +90,12 @@ spike_down={
 
 [layer_names]
 
-2d_physics/layer_1="Player"
+2d_physics/layer_1="player_hurtbox"
 2d_physics/layer_2="wall"
-2d_physics/layer_3="Ball"
-2d_physics/layer_4="Hitbox"
+2d_physics/layer_3="ball_hitbox"
+2d_physics/layer_4="ball_hurtbox"
+2d_physics/layer_5="enemy_hurtbox"
+2d_physics/layer_6="enemy_physical"
 
 [physics]
 

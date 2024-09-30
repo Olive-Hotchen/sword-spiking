@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4nxmqwk1wcef"]
+
+[ext_resource type="Script" path="res://Scripts/Camera2d.cs" id="1_k01uj"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_q4p5u"]
+
+[node name="Camera2D" type="Camera2D" groups=["camera"]]
+position_smoothing_enabled = true
+position_smoothing_speed = 2.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+script = ExtResource("1_k01uj")
+Noise = SubResource("FastNoiseLite_q4p5u")

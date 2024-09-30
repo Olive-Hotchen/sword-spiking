@@ -10,8 +10,6 @@ public partial class HurtBox : Area2D
 
     public override void _Ready()
     {
-        CollisionLayer = 0;
-        CollisionMask = 8;
         AreaEntered += OnAreaEntered;
 
         base._Ready();
@@ -21,7 +19,7 @@ public partial class HurtBox : Area2D
         {
             if (area is HitBox hb)
             {
-                HitBoxEntered?.Invoke(this, new HitBoxEnteredEventArgs(hb, hb.Player));
+                HitBoxEntered?.Invoke(this, new HitBoxEnteredEventArgs(hb));
             }
         }
     }
@@ -29,12 +27,10 @@ public partial class HurtBox : Area2D
     public class HitBoxEnteredEventArgs
     {
         public HitBox HitBox { get; set; }
-        public Character Player { get; set; }
 
-        public HitBoxEnteredEventArgs(HitBox hb, Character c)
+        public HitBoxEnteredEventArgs(HitBox hb)
         {
             HitBox = hb;
-            Player = c;
         }
     }
 }
