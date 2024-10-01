@@ -1,68 +1,12 @@
-[gd_scene load_steps=19 format=3 uid="uid://frw2e4mrccct"]
+[gd_scene load_steps=17 format=3 uid="uid://frw2e4mrccct"]
 
 [ext_resource type="Script" path="res://Scenes/Character.cs" id="1_dcc8b"]
-[ext_resource type="Texture2D" uid="uid://bpic74schxrlq" path="res://Assets/adventurer-hand-combat-Sheet.png" id="2_63lpj"]
+[ext_resource type="SpriteFrames" uid="uid://d3o7pbdaec4i7" path="res://resources/character_sprite_frames.tres" id="2_kel1e"]
 [ext_resource type="PackedScene" uid="uid://dhti6kgpavov2" path="res://Scenes/hitbox.tscn" id="3_pu6pm"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://bv1k7oaoqdqyf" path="res://resources/animations/player_character_animation_state_machine.tres" id="4_y04ay"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lg36h"]
 size = Vector2(99, 142)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tjc3l"]
-atlas = ExtResource("2_63lpj")
-region = Rect2(0, 111, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tgnst"]
-atlas = ExtResource("2_63lpj")
-region = Rect2(50, 111, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_piav3"]
-atlas = ExtResource("2_63lpj")
-region = Rect2(100, 111, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j8p0o"]
-atlas = ExtResource("2_63lpj")
-region = Rect2(150, 111, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_y2msr"]
-atlas = ExtResource("2_63lpj")
-region = Rect2(250, 111, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ddewv"]
-atlas = ExtResource("2_63lpj")
-region = Rect2(200, 111, 50, 37)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4p5vy"]
-atlas = ExtResource("2_63lpj")
-region = Rect2(300, 111, 50, 37)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_6y6r5"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tjc3l")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tgnst")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_piav3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_j8p0o")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_y2msr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ddewv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4p5vy")
-}],
-"loop": true,
-"name": &"kick",
-"speed": 5.0
-}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0u8sf"]
 resource_local_to_scene = true
@@ -74,76 +18,40 @@ resource_local_to_scene = true
 radius = 24.1466
 height = 124.461
 
-[sub_resource type="Animation" id="Animation_pxvhq"]
-resource_name = "kick_right"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.1, 0.166667, 0.3, 0.366667, 0.433333),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("HitboxRightLow/KickCol:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.0333333, 0.166667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("HitboxHigh/KickCol:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.3, 0.466667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cau8l"]
+radius = 37.0
+height = 128.0
 
-[sub_resource type="Animation" id="Animation_vg7du"]
+[sub_resource type="Animation" id="Animation_cn2tn"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("HitboxRightLow/KickCol:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("HitboxHigh/KickCol:disabled")
+tracks/2/path = NodePath("HitBoxRightLow/KickCol:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -155,7 +63,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("HitBoxLeftLow/Kick1:disabled")
+tracks/3/path = NodePath("HitboxRightHigh/KickCol:disabled")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -167,7 +75,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("HitBoxLeftHigh/Kick2:disabled")
+tracks/4/path = NodePath("HitBoxLeftLow/KickCol:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -176,10 +84,206 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("HitBoxLeftHigh/Kick2:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("HitboxUp/KickCol:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
-[sub_resource type="Animation" id="Animation_cnrte"]
-resource_name = "kick_left"
+[sub_resource type="Animation" id="Animation_tcrjd"]
+resource_name = "h_kick_left"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"h_kick"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.2, 0.233333, 0.3, 0.366667, 0.433333, 0.533333, 0.6, 0.666667, 0.733333, 0.833333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitBoxLeftLow/KickCol:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.266667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HitBoxLeftHigh/Kick2:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.433333, 0.733333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_1g3ys"]
+resource_name = "h_kick_right"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"h_kick"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.2, 0.233333, 0.3, 0.366667, 0.433333, 0.533333, 0.6, 0.666667, 0.733333, 0.833333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitBoxRightLow/KickCol:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.266667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HitboxRightHigh/KickCol:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.433333, 0.766667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_xcofj"]
+resource_name = "idle"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.2, 0.3, 0.366667, 0.466667, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1.03526, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="Animation" id="Animation_rhgl2"]
+resource_name = "v_kick"
 length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"v_kick"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.1, 0.133333, 0.2, 0.233333, 0.333333, 0.4, 0.466667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitboxUp/KickCol:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.466667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_qi1vp"]
+resource_name = "dash"
+length = 0.3
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -187,81 +291,105 @@ tracks/0/path = NodePath("AnimatedSprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.1, 0.166667, 0.3, 0.366667, 0.433333),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6]
+"values": [0, 1, 2, 3]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("HitBoxLeftLow/Kick1:disabled")
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.0333333, 0.166667),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false, true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("HitBoxLeftHigh/Kick2:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.3, 0.466667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
+"values": [&"dash"]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_nmh41"]
+[sub_resource type="Animation" id="Animation_erssa"]
+resource_name = "run"
+length = 0.65
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.166667, 0.266667, 0.333333, 0.4, 0.533333, 0.6),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2, -2, -2, -2),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_es7rf"]
 _data = {
-"RESET": SubResource("Animation_vg7du"),
-"kick_left": SubResource("Animation_cnrte"),
-"kick_right": SubResource("Animation_pxvhq")
+"RESET": SubResource("Animation_cn2tn"),
+"dash": SubResource("Animation_qi1vp"),
+"h_kick_left": SubResource("Animation_tcrjd"),
+"h_kick_right": SubResource("Animation_1g3ys"),
+"idle": SubResource("Animation_xcofj"),
+"run": SubResource("Animation_erssa"),
+"v_kick": SubResource("Animation_rhgl2")
 }
 
-[node name="Character" type="CharacterBody2D" groups=["freeze"]]
+[node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("AnimationTree", "AnimationPlayer") groups=["freeze"]]
 collision_mask = 6
 script = ExtResource("1_dcc8b")
+AnimationTree = NodePath("AnimationTree")
+AnimationPlayer = NodePath("AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -71)
 shape = SubResource("RectangleShape2D_lg36h")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -138)
+scale = Vector2(3.22619, 3.22619)
+sprite_frames = ExtResource("2_kel1e")
+animation = &"idle"
 
 [node name="SpikeHitBoxActive" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-0.999996, -104)
-scale = Vector2(4.6, 5.94595)
-sprite_frames = SubResource("SpriteFrames_6y6r5")
-animation = &"kick"
-
-[node name="HitboxRightLow" parent="." node_paths=PackedStringArray("HitBoxSender") groups=["spike_hitbox", "spike_right"] instance=ExtResource("3_pu6pm")]
+[node name="HitBoxRightLow" parent="." node_paths=PackedStringArray("HitBoxSender") groups=["spike_hitbox", "spike_right"] instance=ExtResource("3_pu6pm")]
 position = Vector2(0, 14)
 collision_mask = 8
 HitBoxSender = NodePath("..")
 Impulse = Vector2(0, -400)
 
-[node name="KickCol" type="CollisionShape2D" parent="HitboxRightLow"]
+[node name="KickCol" type="CollisionShape2D" parent="HitBoxRightLow"]
 position = Vector2(73, -39)
 rotation = 1.24406
 shape = SubResource("CapsuleShape2D_0u8sf")
 disabled = true
 
-[node name="HitboxHigh" parent="." node_paths=PackedStringArray("HitBoxSender") groups=["spike_hitbox", "spike_right"] instance=ExtResource("3_pu6pm")]
+[node name="HitboxRightHigh" parent="." node_paths=PackedStringArray("HitBoxSender") groups=["spike_hitbox", "spike_right"] instance=ExtResource("3_pu6pm")]
 position = Vector2(0, 14)
 collision_mask = 8
 HitBoxSender = NodePath("..")
 Impulse = Vector2(2000, -200)
 
-[node name="KickCol" type="CollisionShape2D" parent="HitboxHigh"]
-position = Vector2(76, -66)
+[node name="KickCol" type="CollisionShape2D" parent="HitboxRightHigh"]
+position = Vector2(78, -95)
 rotation = 1.54463
 shape = SubResource("CapsuleShape2D_ov0wf")
 disabled = true
@@ -271,7 +399,7 @@ collision_mask = 8
 HitBoxSender = NodePath("..")
 Impulse = Vector2(0, -400)
 
-[node name="Kick1" type="CollisionShape2D" parent="HitBoxLeftLow"]
+[node name="KickCol" type="CollisionShape2D" parent="HitBoxLeftLow"]
 position = Vector2(-77, -24)
 rotation = -1.20018
 shape = SubResource("CapsuleShape2D_0u8sf")
@@ -283,12 +411,26 @@ HitBoxSender = NodePath("..")
 Impulse = Vector2(-2000, -200)
 
 [node name="Kick2" type="CollisionShape2D" parent="HitBoxLeftHigh"]
-position = Vector2(-101, -60)
+position = Vector2(-94, -83)
 rotation = 1.54463
 shape = SubResource("CapsuleShape2D_ov0wf")
 disabled = true
 
+[node name="HitboxUp" parent="." node_paths=PackedStringArray("HitBoxSender") instance=ExtResource("3_pu6pm")]
+collision_mask = 8
+HitBoxSender = NodePath("..")
+Impulse = Vector2(0, -1000)
+
+[node name="KickCol" type="CollisionShape2D" parent="HitboxUp"]
+position = Vector2(-3, -151)
+shape = SubResource("CapsuleShape2D_cau8l")
+disabled = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_nmh41")
+"": SubResource("AnimationLibrary_es7rf")
 }
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = ExtResource("4_y04ay")
+anim_player = NodePath("../AnimationPlayer")

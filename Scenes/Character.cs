@@ -1,7 +1,4 @@
-using System;
-using System.Linq;
 using Godot;
-using Godot.Collections;
 
 namespace BallSpiking.Scenes;
 
@@ -18,7 +15,11 @@ public partial class Character : CharacterBody2D
     [Export] public float Speed { get; set; } = 500.0f;
     [Export] public float Acceleration { get; set; } = 2000.0f;
     [Export] public float Friction { get; set; } = 1800.0f;
-   
+    [Export] public AnimationTree AnimationTree { get; set; }
+    [Export] public AnimationPlayer AnimationPlayer { get; set; }
+
+    private AnimationNodeStateMachinePlayback StateMachine { get; set; }
+    
     private Timer _inputBuffer;
     private Timer _coyoteTimer;
     private bool _coyoteJump = true;
@@ -29,6 +30,8 @@ public partial class Character : CharacterBody2D
         _inputBuffer.WaitTime = InputBufferPatience;
         _inputBuffer.OneShot = true;
         AddChild(_inputBuffer);
+
+        StateMachine = (AnimationNodeStateMachinePlayback)AnimationTree.Get("parameters/playback");
 
         _coyoteTimer = new Timer();
         _coyoteTimer.WaitTime = CoyoteTime;
@@ -116,7 +119,7 @@ public partial class Character : CharacterBody2D
             < 0 => true,
             _ => GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH
         };
-
+        
         MoveAndSlide();
         base._PhysicsProcess(delta);
     }
@@ -130,17 +133,63 @@ public partial class Character : CharacterBody2D
 
     private void HandleInput()
     {
+        
         if (Input.IsActionJustPressed("spike_right"))
         {
             GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH = false;
-            GetNode<AnimationPlayer>("AnimationPlayer").Play("kick_right");
+            StartRightKick();
         } else if (Input.IsActionJustPressed("spike_left"))
         {
             GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH = true;
-            GetNode<AnimationPlayer>("AnimationPlayer").Play("kick_left");
+            StartLeftKick();
+        } else if (Input.IsActionJustPressed("spike_up"))
+        {
+            StartHighKick();
+        } else if (Sprinting && Velocity.X != 0)
+        {
+            StartDash();
+        } else if (Velocity.X != 0)
+        {
+            StartRun();
         }
+        else
+        {
+            StartIdle();
+        }
+
+       
+        
     }
 
+    private void StartDash()
+    {
+        StateMachine.Travel("dash");
+    }
+
+    private void StartIdle()
+    {
+        StateMachine.Travel("idle");
+    }
+
+    private void StartLeftKick()
+    {
+        StateMachine.Travel("h_kick_left");
+    }
+    private void StartRightKick()
+    {
+        StateMachine.Travel("h_kick_right");
+    }
+
+    private void StartRun()
+    {
+        StateMachine.Travel("run");
+    }
+
+    private void StartHighKick()
+    {
+        StateMachine.Travel("v_kick");
+    }
+    
     public Vector2 CachedVelocity { get; set; }
     
     public bool Sprinting { get; set; }

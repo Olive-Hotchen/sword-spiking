@@ -23,19 +23,7 @@ public partial class Ball : RigidBody2D
     public override void _Ready()
     {
         HurtBox.HitBoxEntered += HurtBoxOnHitBoxEntered;
-        BodyEntered += OnBodyEntered;
         base._Ready();
-    }
-
-    private void OnBodyEntered(Node body)
-    {
-        if(body.IsInGroup("wall"))
-            if (GetNode<AnimationPlayer>("AnimationPlayer").IsPlaying())
-            {
-                GetNode<AnimationPlayer>("AnimationPlayer").Stop();
-            }
-        
-        GetNode<AnimationPlayer>("AnimationPlayer").Play("bounce_v");
     }
 
     private void HurtBoxOnHitBoxEntered(object sender, HurtBox.HitBoxEnteredEventArgs e)
@@ -95,7 +83,7 @@ public partial class Ball : RigidBody2D
     {
         var cachedBounce = PhysicsMaterialOverride.Bounce;
         PhysicsMaterialOverride.Bounce = 0.1f;
-        ApplyCentralImpulse(new Vector2(0, -800));
+        ApplyCentralImpulse(new Vector2(0, -200));
         GetTree().CreateTimer(0.4f).Timeout += () => PhysicsMaterialOverride.Bounce = cachedBounce;
         ParticleQueue.Trigger();
         
