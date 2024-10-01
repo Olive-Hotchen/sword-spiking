@@ -82,10 +82,35 @@ public partial class Ball : RigidBody2D
     public void OnEnemyHit()
     {
         var cachedBounce = PhysicsMaterialOverride.Bounce;
-        PhysicsMaterialOverride.Bounce = 0.1f;
+        PhysicsMaterialOverride.Bounce = 0.4f;
         ApplyCentralImpulse(new Vector2(0, -200));
         GetTree().CreateTimer(0.4f).Timeout += () => PhysicsMaterialOverride.Bounce = cachedBounce;
         ParticleQueue.Trigger();
-        
+    }
+
+    public void Bounce()
+    { 
+        ApplyCentralImpulse(new Vector2(0, -300));
+    }
+
+    public void DisableBall()
+    {
+        SetPhysicsProcess(false);
+        HitBox.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+        HurtBox.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+    }
+    public void EnableBall()
+    {
+        SetPhysicsProcess(true);
+        HitBox.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        HurtBox.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        LinearVelocity = Vector2.Zero;
+    }
+    
+    public void PlayerDoubleJump()
+    {
+        EmitSignal(SignalName.FreezeFrameRequested); 
+        LinearVelocity = Vector2.Zero;
+        ApplyCentralImpulse(new Vector2(0, 100));
     }
 }

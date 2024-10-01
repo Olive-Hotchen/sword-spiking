@@ -87,7 +87,7 @@ _data = {
 }
 
 [node name="Ball" type="RigidBody2D" node_paths=PackedStringArray("HurtBox", "HitBox", "ParticleQueue") groups=["freeze", "freezer"]]
-collision_layer = 0
+collision_layer = 128
 collision_mask = 34
 physics_material_override = SubResource("PhysicsMaterial_5ts6s")
 gravity_scale = 2.0

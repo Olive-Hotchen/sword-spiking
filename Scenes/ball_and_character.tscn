@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cywg4ju4ngrlc"]
+
+[ext_resource type="Script" path="res://BallAndCharacter.cs" id="1_q0olg"]
+[ext_resource type="PackedScene" uid="uid://frw2e4mrccct" path="res://Scenes/character.tscn" id="2_ohbkg"]
+[ext_resource type="PackedScene" uid="uid://dmy165tmuyi0b" path="res://Scenes/ball.tscn" id="3_vnyyy"]
+
+[node name="BallAndCharacter" type="Node2D" node_paths=PackedStringArray("Character", "Ball")]
+script = ExtResource("1_q0olg")
+Character = NodePath("Character")
+Ball = NodePath("Ball")
+
+[node name="Character" parent="." instance=ExtResource("2_ohbkg")]
+scale = Vector2(0.5, 0.5)
+
+[node name="Ball" parent="." instance=ExtResource("3_vnyyy")]
+z_index = -1
+position = Vector2(-17, -48)

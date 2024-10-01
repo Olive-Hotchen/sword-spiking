@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bsy4fo7wi3lev"]
+[gd_scene load_steps=6 format=3 uid="uid://bsy4fo7wi3lev"]
 
 [ext_resource type="Script" path="res://Scenes/Root.cs" id="1_fddh6"]
-[ext_resource type="PackedScene" uid="uid://frw2e4mrccct" path="res://Scenes/character.tscn" id="1_rcfu3"]
-[ext_resource type="PackedScene" uid="uid://bi0ej4m7vxu8y" path="res://Scenes/ball_and_label.tscn" id="2_syguv"]
 [ext_resource type="PackedScene" uid="uid://0w5b1nnchuw1" path="res://Scenes/Enemy.tscn" id="3_4leuf"]
+[ext_resource type="PackedScene" uid="uid://cywg4ju4ngrlc" path="res://Scenes/ball_and_character.tscn" id="4_ixejx"]
 [ext_resource type="PackedScene" uid="uid://c4nxmqwk1wcef" path="res://ShakeCamera.tscn" id="5_147fv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n06r6"]
@@ -70,14 +69,6 @@ offset_right = 1160.0
 offset_bottom = 620.0
 color = Color(0, 0, 0, 1)
 
-[node name="Character" parent="." instance=ExtResource("1_rcfu3")]
-position = Vector2(133, 278)
-scale = Vector2(0.5, 0.5)
-
-[node name="BallAndLabel" parent="." instance=ExtResource("2_syguv")]
-position = Vector2(-102, 422)
-metadata/_edit_group_ = true
-
 [node name="EnemySkele" parent="." instance=ExtResource("3_4leuf")]
 position = Vector2(999, 374)
 
@@ -86,3 +77,6 @@ position = Vector2(578, 114)
 zoom = Vector2(1.3, 1.3)
 NoiseShakeStrength = 30.0
 RandomShakeStrength = 15.0
+
+[node name="BallAndCharacter" parent="." instance=ExtResource("4_ixejx")]
+position = Vector2(62, 412)

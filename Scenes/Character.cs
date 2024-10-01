@@ -1,3 +1,6 @@
+using System;
+using BallSpiking.Scripts;
+using BallSpiking.Singletons;
 using Godot;
 
 namespace BallSpiking.Scenes;
@@ -23,6 +26,10 @@ public partial class Character : CharacterBody2D
     private Timer _inputBuffer;
     private Timer _coyoteTimer;
     private bool _coyoteJump = true;
+    private bool _jumpAttempted;
+    private bool _extraJump;
+    private bool _touchingBall;
+    private Ball _ball;
 
     public override void _Ready()
     {
@@ -32,22 +39,49 @@ public partial class Character : CharacterBody2D
         AddChild(_inputBuffer);
 
         StateMachine = (AnimationNodeStateMachinePlayback)AnimationTree.Get("parameters/playback");
-
+        
         _coyoteTimer = new Timer();
         _coyoteTimer.WaitTime = CoyoteTime;
         _coyoteTimer.OneShot = true;
         AddChild(_coyoteTimer);
         _coyoteTimer.Timeout += CoyoteTimerOnTimeout;
-        
+        GetNode<Area2D>("BallHandler").BodyEntered += OnAreaEntered;
+        GetNode<Area2D>("BallHandler").BodyExited += OnAreaExited;
+
         base._Ready();
+        return;
+
+        void OnAreaEntered(Node2D node)
+        {
+            if (node is not Ball b) return;
+            _ball = b;
+            _touchingBall = true;
+        }
+
+        void OnAreaExited(Node2D node)
+        {
+            if (node is not Ball) return;
+            _ball = null;
+            _touchingBall = false;
+        }
     }
 
     public override void _PhysicsProcess(double delta)
     {
         var horizontalInput = Input.GetAxis("move_left", "move_right");
-        var jumpAttempted = Input.IsActionJustPressed("jump");
+        _jumpAttempted = Input.IsActionJustPressed("jump");
 
-        if (jumpAttempted || _inputBuffer.TimeLeft > 0)
+        if (_touchingBall && !IsOnFloor() && _jumpAttempted)
+        {
+            Velocity = new Vector2(
+                Velocity.X,
+                JumpVelocity
+            );
+            
+            _ball.PlayerDoubleJump();
+        }
+        
+        if (_jumpAttempted || _inputBuffer.TimeLeft > 0)
         {
             if (_coyoteJump)
             {
@@ -57,7 +91,7 @@ public partial class Character : CharacterBody2D
                 );
                 
                 _coyoteJump = false;
-            } else if (jumpAttempted)
+            } else if (_jumpAttempted)
             {
                 _inputBuffer.Start();
             }
@@ -121,12 +155,23 @@ public partial class Character : CharacterBody2D
         };
         
         MoveAndSlide();
+        
         base._PhysicsProcess(delta);
     }
 
     public override void _Process(double delta)
     {
         HandleInput();
+        
+        
+        if (GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH)
+        {
+            BallBackPack.Position = GetNode<AnimatedSprite2D>("AnimatedSprite2D").FlipH switch
+                    {
+                        false => new Vector2(-25, -93),
+                        true => new Vector2(25, -93),
+                    };
+        } 
         
         base._Process(delta);
     }
@@ -144,21 +189,44 @@ public partial class Character : CharacterBody2D
             StartLeftKick();
         } else if (Input.IsActionJustPressed("spike_up"))
         {
-            StartHighKick();
-        } else if (Sprinting && Velocity.X != 0)
+           StartHighKick();
+        }else if(_jumpAttempted || _extraJump)
+        {
+            StartJump();
+        } else if (Velocity.Y > 0)
+        { 
+            StartFall();
+        }
+        else if (Sprinting && Velocity.X != 0 && IsOnFloor())
         {
             StartDash();
-        } else if (Velocity.X != 0)
+        } else if (Velocity.X != 0 && IsOnFloor())
         {
             StartRun();
         }
-        else
+        else if (_jumpAttempted && IsOnFloor())
         {
+          StartLand();
+        } 
+        else if(Velocity.IsEqualApprox(Vector2.Zero))
+        { 
             StartIdle();
         }
+    }
 
-       
-        
+    private void StartLand()
+    {
+        StateMachine.Travel("land");
+    }
+
+    private void StartFall()
+    {
+        StateMachine.Travel("fall");
+    }
+
+    private void StartJump()
+    {
+        StateMachine.Travel("jump");
     }
 
     private void StartDash()
@@ -193,8 +261,11 @@ public partial class Character : CharacterBody2D
     public Vector2 CachedVelocity { get; set; }
     
     public bool Sprinting { get; set; }
+    
+    [Export]
+    public Marker2D BallBackPack { get; set; }
 
-private float GetLocalGravity()
+    private float GetLocalGravity()
     {
         if (Input.IsActionPressed("fast_fall"))
         {
